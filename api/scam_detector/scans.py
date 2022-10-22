@@ -140,17 +140,20 @@ def scan_html_compare(html_dom):
         print(f'\tTitle: {title}')
         
         search_results = []
-        for res in search(title, num_results=0):
+        legitPageUrl = " "
+        for res in search(title, num_results=1):
             search_results.append(res)
         
-        first_res = search_results[0]
-        print(f'\tSearch first result: {first_res}')
+        print(search_results)
+        legitPageUrl = search_results[0]
         
-        first_res_bytes = urllib.request.urlopen(first_res).read()
+        print(f'\tSearch first result: {legitPageUrl}')
+        
+        legitPageUrl_bytes = urllib.request.urlopen(legitPageUrl).read()
         
         salt = bcrypt.gensalt()
         hash_given = bcrypt.hashpw(html_dom, salt)
-        hash_searched = bcrypt.hashpw(first_res_bytes, salt)
+        hash_searched = bcrypt.hashpw(legitPageUrl_bytes, salt)
         
         print(f'\tHash Given:     {hash_given}')
         print(f'\tHash Searched:  {hash_searched}')
