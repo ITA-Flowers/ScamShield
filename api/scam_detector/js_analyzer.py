@@ -52,18 +52,12 @@ def _analyze_script(script : str):
     return result
 
 
-def analyze(url : str):
+def analyze(html_dom):
     result = int(0)
     
-    try:
-        html_dom = urllib.request.urlopen(url).read()
-        scripts = _get_scripts(html_dom)
+    scripts = _get_scripts(html_dom)
         
-        for script in scripts:
-            result += _analyze_script(script)
-        
-    except Exception as why:
-        _on_error(why)
-        return 0
+    for script in scripts:
+        result += _analyze_script(script)
         
     return result

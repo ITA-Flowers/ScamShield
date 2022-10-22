@@ -1,5 +1,9 @@
 import re
+import urllib.request
+
 import scans
+from logs import _on_error
+
 
 def _recognize_url(url : str):
     address =   {   
@@ -56,10 +60,18 @@ def estimate_score(url : str):
     print(30 * '-' + '\n')
     
     if address['isWWW']:
+        try:
+            html_dom = urllib.request.urlopen(url).read()
+        except Exception as why:
+            html_dom = None
+            _on_error(why)
+            
         score += scans.scan_protocol(address['protocol'])
         score += scans.scan_scam_adviser(url)
         score += scans.scan_ssl(address['domain'])
-        score += scans.scan_js(url)
+        if html_dom:
+            score += scans.scan_js(html_dom)
+            score += scans.scan_html_compare(html_dom)
 
         print(30 * '-', end='\n\n')
     

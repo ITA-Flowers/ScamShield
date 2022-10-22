@@ -1,5 +1,9 @@
+from bs4 import BeautifulSoup
+from googlesearch import search
+import urllib.request
 import requests
 import ssl, socket
+import bcrypt
 
 from config import SCAM_ADVISER_API_KEY
 from logs import (_on_debug, _on_result, _on_error)
@@ -78,12 +82,52 @@ def scan_ssl(domain : str):
         _on_result(f'\tRESULT: {0}')
         return 0
 
+# -- Compare HTML Code with first googlesearch result via <title> HTML Code
+def scan_html_compare(html_dom):
+    _on_debug('SCAN: HTML Compare')
+    result = int()
+    
+    try:
+        soup = BeautifulSoup(html_dom, 'html.parser')
+        title = soup.find('title').text
+
+        print(f'\tTitle: {title}')
+        
+        search_results = []
+        for res in search(title):
+            search_results.append(res)
+        
+        first_res = search_results[0]
+        print(f'\tSearch first result: {first_res}')
+        
+        first_res_bytes = urllib.request.urlopen(first_res).read()
+        
+        salt = bcrypt.gensalt()
+        hash_given = bcrypt.hashpw(html_dom, salt)
+        hash_searched = bcrypt.hashpw(first_res_bytes, salt)
+        
+        print(f'\tHash Given:     {hash_given}')
+        print(f'\tHash Searched:  {hash_searched}')
+        
+        if hash_given.__eq__(hash_searched):
+            result = 0
+        else:
+            result = 10
+            
+    except Exception as why:
+        _on_error(why)
+        _on_result(f'\tRESULT: {0}')
+        return 0 
+    
+    _on_result(f'\tRESULT: {result}')
+    return result
+
 # -- Analyze JavaScript Code
-def scan_js(url : str):
+def scan_js(html_dom):
     _on_debug('SCAN: JS')
     result = int()
     
-    result = js_analyzer.analyze(url)
+    result = js_analyzer.analyze(html_dom)
     
     _on_result(f'\tRESULT: {result}')
     return result
