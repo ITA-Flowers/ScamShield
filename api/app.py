@@ -21,3 +21,6 @@ def post_url():
     
     except Exception as why:
         return jsonify(RESPONSE_ERROR), 400
+
+if __name__ == '__main__':
+    app.run()

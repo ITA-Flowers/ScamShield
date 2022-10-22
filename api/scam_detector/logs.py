@@ -1,4 +1,4 @@
-from config import bcolors
+from scam_detector.config import bcolors
 
 # -- Error log
 def _on_error(error):

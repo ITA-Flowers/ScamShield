@@ -6,9 +6,9 @@ import ssl, socket
 import bcrypt
 import re
 
-from config import SCAM_ADVISER_API_KEY
-from logs import (_on_debug, _on_result, _on_error)
-import js_analyzer
+from scam_detector.config import SCAM_ADVISER_API_KEY
+from scam_detector.logs import (_on_debug, _on_result, _on_error)
+import scam_detector.js_analyzer as js_analyzer
 
 # -- Check if secured
 def scan_protocol(protocol : str):
@@ -140,7 +140,7 @@ def scan_html_compare(html_dom):
         print(f'\tTitle: {title}')
         
         search_results = []
-        for res in search(title, num_results=1):
+        for res in search(title, num_results=0):
             search_results.append(res)
         
         first_res = search_results[0]

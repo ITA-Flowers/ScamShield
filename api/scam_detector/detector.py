@@ -1,8 +1,8 @@
 import re
 import urllib.request
 
-import scans
-from logs import _on_error
+import scam_detector.scans as scans
+from scam_detector.logs import _on_error
 
 
 def _recognize_url(url : str):
@@ -67,7 +67,7 @@ def estimate_score(url : str):
             _on_error(why)
             
         score += scans.scan_protocol(address['protocol'])
-        score += scans.scan_scam_adviser(url)
+        #score += scans.scan_scam_adviser(url)
         score += scans.scan_ssl(address['domain'])
         if html_dom:
             score += scans.scan_js(html_dom)

@@ -4,8 +4,8 @@ import urllib.request
 import urllib.error
 import re
 
-from logs import _on_error
-from config import bcolors
+from scam_detector.logs import _on_error
+from scam_detector.config import bcolors
 
 
 def _get_scripts(html_dom):
