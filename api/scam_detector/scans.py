@@ -140,7 +140,7 @@ def scan_html_compare(html_dom):
         print(f'\tTitle: {title}')
         
         search_results = []
-        for res in search(title, num_results=0):
+        for res in search(title, num_results=1):
             search_results.append(res)
         
         first_res = search_results[0]

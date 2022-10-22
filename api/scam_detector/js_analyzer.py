@@ -1,4 +1,3 @@
-from tkinter.messagebox import RETRY
 from bs4 import BeautifulSoup
 import urllib.request
 import urllib.error
@@ -30,7 +29,7 @@ def _get_scripts(html_dom):
             if not m:
                 source = 'http:' + source
             try:
-                scripts_texts.append(urllib.request.urlopen(source).read())
+                scripts_texts.append(urllib.request.urlopen(source).read().decode('utf-8'))
                 downloaded += 1
             except urllib.error.URLError:
                 print(f'\t{bcolors.RED}Cannot download script: {source}{bcolors.ENDC}')
@@ -39,27 +38,30 @@ def _get_scripts(html_dom):
     print(f'\tSOURCED SCRIPTS:        {len(sources)}')
     print(f'\tDOWNLOADED SCRIPTS:     {downloaded}')
     print(f'\tCOLLECTED SCRIPTS:      {len(scripts_texts)}')
-    print()
     
-    return scripts_texts
+    return scripts_texts, len(scripts_elements)
 
 
 def _analyze_script(script : str):
-    result = int()
-
-    # TODO: JS Script Analyze
-    # ...
-    result = 0
-    
-    return result
+    regex_1 = r"unescape"
+    m1 = re.findall(regex_1, script)
+    return len(m1)
 
 
 def analyze(html_dom):
     result = int(0)
     
-    scripts = _get_scripts(html_dom)
-        
+    scripts, detected_scripts_amount = _get_scripts(html_dom)
+    
+    matches = 0
     for script in scripts:
-        result += _analyze_script(script)
+        matches += _analyze_script(script)
+    
+    print(f'\tSUSPICIOUS METHODS:\t{matches}')
+    
+    if matches > (detected_scripts_amount / 3):
+        result = 15
+    else:
+        result = 0
         
     return result
