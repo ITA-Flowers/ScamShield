@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="2dp" >
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp" >
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_toLeftOf="@+id/imageButton_message"
+                android:layout_toStartOf="@+id/imageButton_message"
+                android:text="TEST"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:id="@+id/textView_name" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/textView_name"
+                android:layout_toLeftOf="@+id/imageButton_message"
+                android:layout_toStartOf="@+id/imageButton_message"
+                android:text="724386646"
+                android:textSize="14sp"
+                android:id="@+id/textView_phoneNumber"
+                android:textColor="@color/black"
+                tools:ignore="UnknownId" />
+        </RelativeLayout>
+    </androidx.cardview.widget.CardView>
+</LinearLayout>

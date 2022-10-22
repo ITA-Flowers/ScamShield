@@ -1,0 +1,23 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <string name="app_name">ScamShield</string>
+    <string name="icon_showing_place_to_put_url_or_search">Icon showing place to put url or search</string>
+    <string name="icon_for_clearing_the_textfield">Icon for clearing the textField</string>
+    <string name="wyszukaj_lub_wprowad_adres_url" tools:ignore="TypographyEllipsis,Typos">Wyszukaj lub wprowadź adres URL...</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="pozosta_na_stronie">Pozostań na stronie</string>
+    <string name="wr_do_poprzedniej_strony">Wróć do poprzedniej strony</string>
+    <string name="pozosta_na_stronie_niezalecane">Pozostań na stronie (niezalecane)</string>
+    <string name="uwaga">Uwaga!</string>
+    <string name="wchodzisz_na_stron_potencjalnie_niebezpieczn">Wchodzisz na stronę potencjalnie niebezpieczną!</string>
+    <string name="textview">TextView</string>
+    <string name="wed_ug_oceny_na_portalu_scamadvisor_com_strona_jest_potencjalnie_niebezpieczna">Według oceny na portalu scamadvisor.com strona jest potencjalnie niebezpieczna.</string>
+    <string name="przejd_do_listy_bezpiecznych_kontakt_w">Przejdź do listy bezpiecznych kontaktów</string>
+    <string name="historia_przegl_dania">Historia przeglądania</string>
+    <string name="filtrowanie_sms_i_po_cze">Filtrowanie SMS i połączeń</string>
+    <string name="lista_zaufanych_kontakt_w">Lista zaufanych kontaktów</string>
+    <string name="lista_domen_zablokowanych">Lista domen zablokowanych</string>
+    <string name="lista_domen_zaufanych">Lista domen zaufanych</string>
+    <string name="tw_rcy">Twórcy</string>
+    <string name="not_implemented_yet_funcionality_will_be_enable_in_the_full_version">NOT IMPLEMENTED YET. Funcionality will be enable in the full version.</string>
+</resources>

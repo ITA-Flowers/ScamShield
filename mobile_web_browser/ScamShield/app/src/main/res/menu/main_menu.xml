@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:checkableBehavior="single">
+        <item android:id="@+id/browserHistory"
+            android:icon="@drawable/ic_baseline_history_24"
+            android:title="@string/historia_przegl_dania" />
+    </group>
+    <group android:checkableBehavior="single">
+        <item android:id="@+id/domainBlackList"
+            android:icon="@drawable/ic_baseline_block_24"
+            android:title="@string/lista_domen_zablokowanych" />
+    </group>
+    <group android:checkableBehavior="single">
+        <item android:id="@+id/domainWhiteList"
+            android:icon="@drawable/ic_baseline_check_circle_24"
+            android:title="@string/lista_domen_zaufanych" />
+    </group>
+    <group android:checkableBehavior="single">
+        <item android:id="@+id/credits"
+            android:icon="@drawable/ic_baseline_local_florist_24"
+            android:title="@string/tw_rcy" />
+    </group>
+</menu>
