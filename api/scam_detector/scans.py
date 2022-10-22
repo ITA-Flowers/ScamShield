@@ -4,6 +4,7 @@ import urllib.request
 import requests
 import ssl, socket
 import bcrypt
+import re
 
 from config import SCAM_ADVISER_API_KEY
 from logs import (_on_debug, _on_result, _on_error)
@@ -52,6 +53,51 @@ def scan_scam_adviser(url : str):
         return 0
  
 # -- Check SSL Cert
+def _ssl_check_CA(issued_by : str):
+    print(f'\tCA: {issued_by}')
+    
+    url = 'https://sslbl.abuse.ch/statistics/'
+    html_dom = urllib.request.urlopen(url)
+    
+    soup = BeautifulSoup(html_dom, 'html.parser')
+    
+    data = soup.find('table').find('tbody').find_all('tr')
+    CAs = []
+    for j in data:
+        CAs.append(j.contents[1].text)
+    
+    print('\tTOP Issued CAs:')
+    for ca in CAs:
+        print(f'\t- {ca}')
+    print()
+    
+    if issued_by in CAs:
+        return True
+    
+    return False
+
+def _ssl_check_serial(serial : str):
+    print(f'\tSERIAL NUMBER: {serial}')
+    
+    url = 'https://sslbl.abuse.ch/blacklist/sslblacklist.csv'
+    '''
+    # Listingdate,SHA1,Listingreason\r\n
+    '''
+    data = urllib.request.urlopen(url).read().decode('utf-8')
+    
+    data = data.split('\n')
+    data = data[9:-1]
+    
+    serials = []
+    for record in data:
+        serials.append(record.split(',')[1])
+    
+    if serial in serials:
+        print(f'\tSERIAL FOUND ON BLACKLIST!')
+        return True
+    
+    return False
+
 def scan_ssl(domain : str):
     
     _on_debug('SCAN: SSL')
@@ -64,15 +110,15 @@ def scan_ssl(domain : str):
             s.connect((domain, 443))
             cert = s.getpeercert()
 
-        subject = dict(x[0] for x in cert['subject'])
+        serial_number = cert['serialNumber']
         issuer = dict(x[0] for x in cert['issuer'])
-        
-        issued_to = subject['commonName']
         issued_by = issuer['commonName']
         
-        # TODO: Analyze [issued_to] and [issued_by]
-        result = 0
-        # ...
+        if _ssl_check_CA(issued_by):
+            result += 10
+        
+        if _ssl_check_serial(serial_number):
+            result += 100
         
         _on_result(f'\tRESULT: {result}')
         return result
@@ -112,7 +158,7 @@ def scan_html_compare(html_dom):
         if hash_given.__eq__(hash_searched):
             result = 0
         else:
-            result = 10
+            result = 50
             
     except Exception as why:
         _on_error(why)

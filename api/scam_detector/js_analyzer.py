@@ -33,7 +33,7 @@ def _get_scripts(html_dom):
                 scripts_texts.append(urllib.request.urlopen(source).read())
                 downloaded += 1
             except urllib.error.URLError:
-                print(f'{bcolors.RED}Cannot download script: {source}{bcolors.ENDC}')
+                print(f'\t{bcolors.RED}Cannot download script: {source}{bcolors.ENDC}')
         
     print(f'\tDETECTED SCRIPTS:       {len(scripts_elements)}')
     print(f'\tSOURCED SCRIPTS:        {len(sources)}')
@@ -47,6 +47,8 @@ def _get_scripts(html_dom):
 def _analyze_script(script : str):
     result = int()
 
+    # TODO: JS Script Analyze
+    # ...
     result = 0
     
     return result
