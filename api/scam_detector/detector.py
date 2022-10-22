@@ -67,7 +67,7 @@ def estimate_score(url : str):
             _on_error(why)
             
         score += scans.scan_protocol(address['protocol'])
-        # score += scans.scan_scam_adviser(url)
+        score += scans.scan_scam_adviser(url)
         score += scans.scan_ssl(address['domain'])
         if html_dom:
             score += scans.scan_js(html_dom)
