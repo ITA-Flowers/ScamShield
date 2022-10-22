@@ -1,27 +1,66 @@
-from random import random
-import urllib.request
-from bs4 import BeautifulSoup
+import re
+import scans
 
-def get_html_dom(url : str):
-    return urllib.request.urlopen(url).read()
+def _recognize_url(url : str):
+    address =   {   
+                    'protocol' : None, 
+                    'domain' : None, 
+                    'theme' : None, 
+                    'tail' : None, 
+                    'isWWW' : False
+                }
 
-
-def estimate_score(url : str):
-    score = 0 # range(0, 100); where (0 -> valid) and (100 -> scam)
-    
-    content = get_html_dom(url)
-    # print(content)
-    # print(50 * '-')
-    
-    soup = BeautifulSoup(content, 'html.parser')
-    
-    tags_a = soup.find_all('a')
-    for tag in tags_a:
-        print(30 * '-')
-        print(tag)
+    result = re.match(r"^(?P<protocol>.*?):/*(www\.)*(?P<domain>.*?)/", url)
+    if result:
         
-    print(60 * '-', end='\n\n')
+        address['protocol'] = result.group('protocol')
+        address['domain'] = result.group('domain')
+        
+        if not ((address['protocol'].__eq__('http')) or (address['protocol'].__eq__('https'))):
+            ind = url.index(address['domain'])
+            address['domain'] = url[ind::]
+            return address
+            
+        address['isWWW'] = True
+        theme_ind = url.index(address['domain']) + len(address['domain'])
+        theme_url = url[theme_ind::]
+        
+        if len(theme_url) > 1:
+            if '?' in theme_url:
+                address['theme'] = theme_url[:theme_url.index('?')]
+                address['tail'] = theme_url[theme_url.index('?')+1::]
+            else:
+                address['theme'] = theme_url
+    else:
+        raise ValueError('REGEX Error')
     
-    score = int(round((random() * 100), 0))
+    return address        
+    
+    
+# --- MAIN ---
+def estimate_score(url : str):
+    # -- Trust Score (0 - 100) : 0-legit, 100-scam
+    score = int()
+
+    try:
+        address = _recognize_url(url)
+    except ValueError as why:
+        raise why
+    
+    print('ADDRESS:')
+    print(f'\tPROTOCOL: {address["protocol"]}')
+    print(f'\tDOMAIN:   {address["domain"]}')
+    print(f'\tTHEME:    {address["theme"]}')
+    print(f'\tTAIL:     {address["tail"]}')
+    print(f'\tisWWW:    {address["isWWW"]}')
+    print(30 * '-' + '\n')
+    
+    if address['isWWW']:
+        score += scans.scan_protocol(address['protocol'])
+        score += scans.scan_scam_adviser(url)
+        score += scans.scan_ssl(address['domain'])
+        score += scans.scan_js(url)
+
+        print(30 * '-', end='\n\n')
     
     return str(score)
