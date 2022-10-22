@@ -1,0 +1,30 @@
+{
+    "name": "Scam-Shield",
+    "description": "Your best protection from scam and phishing attacks.",
+    "version": "1.0",
+    "manifest_version": 3,
+
+    "permissions":  [ "tabs", 
+                      "webNavigation"
+                    ],
+
+    "background": {
+      "service_worker": "js/background.js"
+    },
+
+    "content_scripts": [{
+      "matches" : ["*://*/*"],
+      "js": ["js/content.js"]
+    }],
+
+    "action": {
+      "default_icon": {
+        "16":  "images/logo_c.png",
+        "32":  "images/logo_c.png",
+        "48":  "images/logo_c.png",
+        "128": "images/logo_c.png"
+      },
+      "default_title": "Scam-Shield",
+      "default_popup": "popup/index.html"
+    }
+}
