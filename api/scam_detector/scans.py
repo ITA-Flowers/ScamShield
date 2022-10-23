@@ -1,14 +1,14 @@
 from bs4 import BeautifulSoup
 from googlesearch import search
+from datetime import date
 import urllib.request
-import requests
 import ssl, socket
 import bcrypt
-import re
+import whois
 
-from scam_detector.config import SCAM_ADVISER_API_KEY
 from scam_detector.logs import (_on_debug, _on_result, _on_error)
 import scam_detector.js_analyzer as js_analyzer
+
 
 # -- Check if secured
 def scan_protocol(protocol : str):
@@ -16,41 +16,18 @@ def scan_protocol(protocol : str):
     result = int()
     
     if protocol == 'http':
+        print(f'\tPROTOCOL: {protocol} - UNSECURE')
         result = 5
     elif protocol == 'https':
+        print(f'\tPROTOCOL: {protocol} - SECURE')
         result = 0
     else:
+        print(f'\tPROTOCOL: {protocol}')
         result = 10
         
     _on_result(f'\tRESULT: {result}')
     return result
-
-# -- Scam Adviser API call
-def scan_scam_adviser(url : str):
-    _on_debug('SCAN: Scam Adviser')
-    result = int()
-    api_key = SCAM_ADVISER_API_KEY
-    
-    try:
-        if api_key is None:
-            raise ValueError('Scam Adviser API Key is not defined')
-        endpoint = "https://api.scamadviser.cloud/v2/trust/single?apikey=" + api_key + "&domain=" + url
-    
-        response = requests.request("GET", endpoint)
-
-        if response.ok:
-            score = int(response.json().get('score'))
-            result = 100 - score
-        else:
-            result = 0
-            
-        _on_result(f'\tRESULT: {result}')
-        return result
-    
-    except Exception as why:
-        _on_error(why)
-        _on_result(f'\tRESULT: {result}')
-        return 0
+ 
  
 # -- Check SSL Cert
 def _ssl_check_CA(issued_by : str):
@@ -128,6 +105,7 @@ def scan_ssl(domain : str):
         _on_result(f'\tRESULT: {0}')
         return 0
 
+
 # -- Compare HTML Code with first googlesearch result via <title> HTML Code
 def scan_html_compare(html_dom, domain):
     if domain == 'youtube.com':
@@ -173,6 +151,7 @@ def scan_html_compare(html_dom, domain):
     _on_result(f'\tRESULT: {result}')
     return result
 
+
 # -- Analyze JavaScript Code
 def scan_js(html_dom):
     _on_debug('SCAN: JS')
@@ -182,3 +161,34 @@ def scan_js(html_dom):
     
     _on_result(f'\tRESULT: {result}')
     return result
+
+
+# -- Check page age
+def scan_page_age(url : str):
+    _on_debug('SCAN: Page Age')
+    result = int()
+    
+    try:
+        meta = whois.whois(url)
+        current_date = date.today()
+        page_date = date(meta.creation_date.year, 
+                         meta.creation_date.month, 
+                         meta.creation_date.day)
+        page_total_days_ = current_date - page_date
+
+        print(f'\tPAGE AGE: {page_total_days_}')
+
+        if  page_total_days_.days > 750 :
+            result = 0
+        elif page_total_days_.days < 365:
+            result = 3
+        elif page_total_days_.days < 180:
+            result = 5
+        else:
+            result = 10
+        _on_result(f'\tRESULT: {result}')
+        return result
+    except Exception as why:
+        _on_error(why)
+        _on_result(f'\tRESULT: {0}')
+        return 0

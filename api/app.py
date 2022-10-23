@@ -10,6 +10,7 @@ RESPONSE_ERROR = {"error" : "0"}
 
 @app.route(ENDPOINT, methods=['POST'])
 def post_url():
+    print(request.json)
     try:
         url = request.json.get('url').strip()
 
@@ -17,6 +18,7 @@ def post_url():
         resp["domain"] = url
         resp["phishing_estimate"] = detector.estimate_score(url)
         
+        print(resp)
         return jsonify(resp), 200
     
     except Exception as why:

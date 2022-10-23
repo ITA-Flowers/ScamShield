@@ -40,8 +40,7 @@ def _recognize_url(url : str):
     
     return address        
     
-    
-# --- MAIN ---
+
 def estimate_score(url : str):
     # -- Trust Score (0 - 100) : 0-legit, 100-scam
     score = int()
@@ -57,7 +56,7 @@ def estimate_score(url : str):
     print(f'\tTHEME:    {address["theme"]}')
     print(f'\tTAIL:     {address["tail"]}')
     print(f'\tisWWW:    {address["isWWW"]}')
-    print(30 * '-' + '\n')
+    print(50 * '-' + '\n')
     
     if address['isWWW']:
         try:
@@ -67,14 +66,12 @@ def estimate_score(url : str):
             _on_error(why)
             
         score += scans.scan_protocol(address['protocol'])
-        score += scans.scan_scam_adviser(url)
+        score += scans.scan_page_age(url)
         score += scans.scan_ssl(address['domain'])
         if html_dom:
             score += scans.scan_js(html_dom)
             score += scans.scan_html_compare(html_dom, address['domain'])
-
-        print(30 * '-', end='\n\n')
-    
+            
     if score > 100:
         score = 100
     return str(score)

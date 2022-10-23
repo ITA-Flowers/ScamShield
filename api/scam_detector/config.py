@@ -1,5 +1,3 @@
-SCAM_ADVISER_API_KEY = 'dzcbJCN6DSaBFIvW3pdYWMB35n9j4xyZ'
-
 class bcolors:
     PURPLE = '\033[95m'         # Purple
     BLUE = '\033[94m'           # Blue
