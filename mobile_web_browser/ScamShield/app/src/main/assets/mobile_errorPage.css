@@ -5,9 +5,8 @@ body
 }
 
 .container
-{
-    
-    font-size: 30px;
+{    
+    font-size: 12px;
 }
 .logo
 {
@@ -42,7 +41,7 @@ body
 {
     
     font-family: 'Space Mono', monospace;
-    font-size: 20px;
+    font-size: 12px;
     letter-spacing: 2px;
 }
 @keyframes  fadeIn
@@ -68,7 +67,7 @@ body
     color: #000021;
     background: #c7c7c7;
     line-height: 1.15;
-    font-size: 16px;
+    font-size: 12px;
     margin-right: 10%;
     margin-left: 10%;
 
