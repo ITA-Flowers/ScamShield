@@ -5,10 +5,11 @@ import urllib.request
 import ssl, socket
 import bcrypt
 import whois
+import re
 
 from scam_detector.logs import (_on_debug, _on_result, _on_error)
 import scam_detector.js_analyzer as js_analyzer
-
+import scam_detector.shops_services as shops_services
 
 # -- Check if secured
 def scan_protocol(protocol : str):
@@ -192,3 +193,31 @@ def scan_page_age(url : str):
         _on_error(why)
         _on_result(f'\tRESULT: {0}')
         return 0
+
+# -- Check Shops Service Offers
+def scan_shops_service(url : str):
+    _on_debug('SCAN: Shops Services')
+    result = 0
+    
+    for i in range(len(shops_services.SERVICES_REGEX)):
+        regex = rf"{shops_services.SERVICES_REGEX[i]}"
+        match = re.search(regex, url)
+        if match:
+            print(f'\tMATCH: {regex}')
+            # try:
+            try:
+                valid = shops_services.check_offer(url, i)
+            except ValueError as why:
+                _on_error(why)
+                result += 10
+            except Exception as why:
+                _on_error(why)
+                _on_result(f'\tRESULT: {0}')
+                return 0
+            
+            if not valid:
+                result += 60
+            break
+            
+    _on_result(f'\tRESULT: {result}')
+    return result
