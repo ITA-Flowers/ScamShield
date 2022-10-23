@@ -141,9 +141,9 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
     }
 
     private void sendRequestAboutUrl(String insertedUrl) throws JSONException {
-        String insertedUrlAsJson = "{\"url\": \""+insertedUrl+"\"}";
+        String insertedUrlAsJson = "{\'url\': \'"+insertedUrl+"\'}";
         JSONObject jsonObject = new JSONObject(insertedUrlAsJson);
-        String requestURL = "http://127.0.0.1:5000/api/url";
+        String requestURL = "http://10.104.10.25:8080/api/url";
         RequestQueue requestQueue = Volley.newRequestQueue(this);
         JsonObjectRequest objectRequest = new JsonObjectRequest(
                 Request.Method.POST, requestURL, jsonObject,
