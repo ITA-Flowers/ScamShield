@@ -14,7 +14,7 @@ def _recognize_url(url : str):
                     'isWWW' : False
                 }
 
-    result = re.match(r"^(?P<protocol>.*?):/*(www\.)*(?P<domain>.*?)/", url)
+    result = re.match(r"^(?P<protocol>.*?):/*(www\.)*(?P<domain>.*?)/*$", url)
     if result:
         
         address['protocol'] = result.group('protocol')

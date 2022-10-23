@@ -100,7 +100,11 @@ def scan_ssl(domain : str):
         
         _on_result(f'\tRESULT: {result}')
         return result
-        
+    except WindowsError as why:
+        _on_error(why)
+        result = 10
+        _on_result(f'\tRESULT: {result}')
+        return result
     except Exception as why:
         _on_error(why)
         _on_result(f'\tRESULT: {0}')
