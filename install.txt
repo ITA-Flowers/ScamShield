@@ -1,0 +1,33 @@
+# pip upgrade
+python -m pip install --upgrade pip
+
+# download github repo
+git clone https://github.com/ITA-Flowers/ScamShield.git
+
+# Change dir to api workdir
+cd ./ScamShield/api
+
+# install virtual enviroment python module
+python -m pip install virtualenv
+
+# create virtual enviroment for API
+python -m venv ./.venv
+
+# activate venv
+./.venv/Scripts/activate
+
+# install required modules
+python -m pip install -r ./requirements
+
+# run API
+flask run
+
+## default server host and port:
+## HOST: 0.0.0.0
+## PORT: 8080
+
+# [OPTIONAL] you could set server host address and port by:
+flask run --host '0.0.0.0' --port 8080
+
+# [ALTERNATIVE] run API
+python ./app.py
