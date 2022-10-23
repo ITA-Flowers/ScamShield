@@ -31,7 +31,7 @@ def _get_scripts(html_dom):
             try:
                 scripts_texts.append(urllib.request.urlopen(source).read().decode('utf-8'))
                 downloaded += 1
-            except urllib.error.URLError:
+            except Exception as why:
                 print(f'\t{bcolors.RED}Cannot download script: {source}{bcolors.ENDC}')
         
     print(f'\tDETECTED SCRIPTS:       {len(scripts_elements)}')
