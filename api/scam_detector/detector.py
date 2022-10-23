@@ -65,13 +65,13 @@ def estimate_score(url : str):
             html_dom = None
             _on_error(why)
             
-        # score += scans.scan_protocol(address['protocol'])
-        # score += scans.scan_page_age(url)
-        # score += scans.scan_ssl(address['domain'])
-        # if html_dom:
-        #     score += scans.scan_js(html_dom)
-        #     score += scans.scan_html_compare(html_dom, address['domain'])
-        
+        score += scans.scan_protocol(address['protocol'])
+        score += scans.scan_page_age(url)
+        score += scans.scan_ssl(address['domain'])
+        if html_dom:
+            score += scans.scan_js(html_dom)
+            score += scans.scan_html_compare(html_dom, address['domain'])
+            
         score += scans.scan_shops_service(url)
             
     if score > 100:
