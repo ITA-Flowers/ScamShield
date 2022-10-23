@@ -208,26 +208,3 @@ animation: loading 2s forwards cubic-bezier(0,0,0,0);
     width: 75%;
   }
 }
-.footer {
-  
-  height: 6%;
-  position: fixed;
-  left: 0;
-  bottom: 0;
-  width: 100%;
-  background-color: rgb(245, 245, 245);
-  color: black;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  gap: 10px;
-  
-}
-.scamadv
-{
-  float:left;
-  height: 30px;
-  width: 100px;
-  margin-top: 3.5px;
-}

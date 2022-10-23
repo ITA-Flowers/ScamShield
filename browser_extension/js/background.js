@@ -39,10 +39,20 @@ chrome.webNavigation.onCompleted.addListener(() => {
 // API
 // ---
 // -- API Endpoint
-const apiUrl = 'http://127.0.0.1:5000/api/url'
+const apiUrl = 'http://127.0.0.1:8080/api/url'
 
 // FUNCTIONS
 // ---------
+
+// -- Handle Response
+function handleResponse(response) {
+  console.debug(`RESPONSE: ${response.msg}`);
+}
+
+// -- Handle Error
+function handleError(error) {
+  console.error(`Error: ${error}`);
+}
 
 // -- Page Load Handler
 async function handlePageLoad(pageType)
@@ -53,6 +63,7 @@ async function handlePageLoad(pageType)
     if (!tabs.length) return;
 
     var activeTab = tabs[0];
+    var activeTabId = activeTab.id;
     var activeTabUrlFull = activeTab.url; // full url address
 
     let index = activeTabUrlFull.indexOf('/', 8)
@@ -78,6 +89,9 @@ async function handlePageLoad(pageType)
                 // RESPONSE STATUS OK
                 console.log(`DOMAIN: ${data.domain}`);
                 console.log(`SCORE:  ${data.phishing_estimate}`);
+                if (data.phishing_estimate != "0") {
+                    chrome.runtime.sendMessage({ type: 'ALERT', score: data.phishing_estimate });
+                }
             } else {
                 // RESPONSE STATUS ERROR
                 console.log(`URL: ${activeTabUrl}`)
