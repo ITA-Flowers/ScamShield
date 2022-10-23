@@ -70,10 +70,12 @@ def estimate_score(url : str):
         score += scans.scan_ssl(address['domain'])
         if html_dom:
             score += scans.scan_js(html_dom)
-            score += scans.scan_html_compare(html_dom, address['domain'])
+            # score += scans.scan_html_compare(html_dom, address['domain'])
             
         score += scans.scan_shops_service(url)
-            
+    
+    score = score * 2
+    
     if score > 100:
         score = 100
     return str(score)

@@ -32,7 +32,7 @@ def main():
         
     for domain in domains:
         url = domain[:-1]
-        input(f'Next [{url}]')
+        # input(f'Next [{url}]')
         response = check(url)
         if response is not None:
             result = f'{response["phishing_estimate"]} : {response["domain"]}'
