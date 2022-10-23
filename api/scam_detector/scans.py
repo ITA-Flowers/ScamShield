@@ -129,21 +129,24 @@ def scan_ssl(domain : str):
         return 0
 
 # -- Compare HTML Code with first googlesearch result via <title> HTML Code
-def scan_html_compare(html_dom):
+def scan_html_compare(html_dom, domain):
+    if domain == 'youtube.com':
+        return 0
+    
     _on_debug('SCAN: HTML Compare')
     result = int()
     
     try:
         soup = BeautifulSoup(html_dom, 'html.parser')
         title = soup.find('title').text
+        lang = 'pl-PL'
 
         print(f'\tTitle: {title}')
         
         search_results = []
-        for res in search(title, num_results=1):
+        for res in search(title, num_results=1, lang=lang):
             search_results.append(res)
         
-        print(search_results)
         legitPageUrl = search_results[0]
         
         print(f'\tSearch first result: {legitPageUrl}')

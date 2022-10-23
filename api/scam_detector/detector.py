@@ -71,7 +71,7 @@ def estimate_score(url : str):
         score += scans.scan_ssl(address['domain'])
         if html_dom:
             score += scans.scan_js(html_dom)
-            score += scans.scan_html_compare(html_dom)
+            score += scans.scan_html_compare(html_dom, address['domain'])
 
         print(30 * '-', end='\n\n')
     
