@@ -11,3 +11,17 @@ def _on_debug(msg):
 # -- Result log
 def _on_result(result):
     print(f'{bcolors.YELLOW}{result}{bcolors.ENDC}')
+
+# -- Request log    
+def _on_request(request):
+    print(f'{bcolors.PURPLE}REQUEST:')
+    for section in request:
+        print(f'{section} : {request[section]}')
+    print(bcolors.ENDC)
+
+# -- Response log
+def _on_response(response):
+    print(f'{bcolors.CYAN}RESPONSE:')
+    for section in response:
+        print(f'{section} : {response[section]}')
+    print(bcolors.ENDC)
